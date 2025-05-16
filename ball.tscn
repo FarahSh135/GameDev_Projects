@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://bqo1drbrv3x44"]
+
+[ext_resource type="Script" path="res://ball.gd" id="1_fq74a"]
+[ext_resource type="Texture2D" uid="uid://cmqnwbo8qmxdh" path="res://scoocer.jpg" id="2_itr2q"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mmh0d"]
+albedo_texture = ExtResource("2_itr2q")
+
+[sub_resource type="SphereMesh" id="SphereMesh_4yee6"]
+material = SubResource("StandardMaterial3D_mmh0d")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_r84w6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ncksr"]
+font_size = 43
+outline_size = 14
+outline_color = Color(0, 0, 0, 1)
+
+[node name="RigidBody3D" type="RigidBody3D"]
+script = ExtResource("1_fq74a")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_4yee6")
+skeleton = NodePath("../../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_r84w6")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="lives" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -184.0
+offset_top = -48.0
+offset_right = -93.0
+offset_bottom = -1.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Lives "
+label_settings = SubResource("LabelSettings_ncksr")

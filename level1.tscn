@@ -1,0 +1,81 @@
+[gd_scene load_steps=11 format=3 uid="uid://dmyvphvr7503s"]
+
+[ext_resource type="PackedScene" uid="uid://kcyqwdpqgi20" path="res://plane.tscn" id="1_bpr7h"]
+[ext_resource type="Script" path="res://platform.gd" id="1_ghhef"]
+[ext_resource type="PackedScene" uid="uid://bqo1drbrv3x44" path="res://ball.tscn" id="2_7xrye"]
+[ext_resource type="PackedScene" uid="uid://dph80pd4s5her" path="res://wall_long.tscn" id="2_mk88u"]
+[ext_resource type="PackedScene" uid="uid://t3w8dp3kqp62" path="res://hole.tscn" id="4_ekbwl"]
+[ext_resource type="Script" path="res://nextLvl.gd" id="7_1uh8h"]
+[ext_resource type="Script" path="res://dead_zone.gd" id="8_03ywu"]
+
+[sub_resource type="Environment" id="Environment_8wp7v"]
+ambient_light_source = 3
+ambient_light_color = Color(0.608048, 0.736098, 0.996977, 1)
+ambient_light_sky_contribution = 0.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bhctc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3h3yu"]
+size = Vector3(23.1526, 1, 22.8492)
+
+[node name="Playground" type="Node3D"]
+
+[node name="Platform" type="Node3D" parent="."]
+transform = Transform3D(1.00972, 0, 0, 0, 1.00972, 0, 0, 0, 1.00972, 0, 0, 0)
+script = ExtResource("1_ghhef")
+
+[node name="hole" parent="Platform" instance=ExtResource("4_ekbwl")]
+transform = Transform3D(1.30149, 0, 0, 0, 0.999998, 0, 0, 0, 1.16277, 7.5124, -0.893551, -1.49272)
+
+[node name="plane" parent="Platform" instance=ExtResource("1_bpr7h")]
+transform = Transform3D(8.37502, 0, 0, 0, 0.990374, 0, 0, 0, 9.09859, 1.40151, -0.175711, 2.53619)
+
+[node name="walls" type="Node3D" parent="Platform"]
+
+[node name="StaticBody3D" parent="Platform/walls" instance=ExtResource("2_mk88u")]
+transform = Transform3D(-4.32906e-08, 0, 0.990373, 0, 0.990373, 0, -0.990373, 0, -4.32906e-08, -0.579156, 0.38707, 3.67894)
+
+[node name="StaticBody3D2" parent="Platform/walls" instance=ExtResource("2_mk88u")]
+transform = Transform3D(-4.32906e-08, 0, 0.990373, 0, 0.990373, 0, -0.990373, 0, -4.32906e-08, 1.47323, 0.38707, 1.40251)
+
+[node name="StaticBody3D3" parent="Platform/walls" instance=ExtResource("2_mk88u")]
+transform = Transform3D(-4.32906e-08, 0, 0.990373, 0, 0.990373, 0, -0.990373, 0, -4.32906e-08, 3.29202, 0.38707, 3.67894)
+
+[node name="StaticBody3D4" parent="Platform/walls" instance=ExtResource("2_mk88u")]
+transform = Transform3D(-4.32906e-08, 0, 0.990373, 0, 0.990373, 0, -0.990373, 0, -4.32906e-08, 5.23097, 0.38707, 1.40251)
+
+[node name="StaticBody3D5" parent="Platform/walls" instance=ExtResource("2_mk88u")]
+transform = Transform3D(-4.32906e-08, 0, 0.990373, 0, 0.990373, 0, -0.990373, 0, -4.32906e-08, 7.43715, 0.38707, 3.67894)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.999841, -0.017767, 0.00175773, 3.24086e-11, 0.0984513, 0.995142, -0.0178538, -0.994983, 0.0984356, 2.25443, 7.51065, 3.74964)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.927325, 0.234713, 0.291511, 0.0586671, -0.860439, 0.506166, 0.369631, -0.452278, -0.811676, 0, 6.07199, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8wp7v")
+
+[node name="ball" parent="." instance=ExtResource("2_7xrye")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.51272, 0.565334, 6.15051)
+
+[node name="EndLevel" type="Area3D" parent="."]
+script = ExtResource("7_1uh8h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EndLevel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.26725, -0.0417741, -0.337225)
+shape = SubResource("SphereShape3D_bhctc")
+
+[node name="Dead_Zone" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.12549, -8.56236, 1.70792)
+script = ExtResource("8_03ywu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Dead_Zone"]
+transform = Transform3D(0.976174, 0, 0, 0, 0.976174, 0, 0, 0, 0.976174, -2.77564, 2.42262, 0.667634)
+shape = SubResource("BoxShape3D_3h3yu")
+
+[connection signal="body_entered" from="EndLevel" to="EndLevel" method="_on_body_entered"]
+[connection signal="body_entered" from="Dead_Zone" to="Dead_Zone" method="_on_body_entered"]
+
+[editable path="Platform/plane"]
+[editable path="ball"]
